@@ -1,3 +1,3 @@
-** NoSQL
+*NoSQL
 
 MongoDB Scripts for HolbertonSchool
