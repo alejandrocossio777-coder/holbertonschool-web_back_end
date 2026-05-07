@@ -27,3 +27,5 @@ if __name__ == "__main__":
     print("{} status check".format(
         _count(collection, {"method": "GET", "path": "/status"})
     ))
+
+
