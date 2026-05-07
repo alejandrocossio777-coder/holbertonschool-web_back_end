@@ -4,6 +4,7 @@ import pymongo
 
 
 def insert_school(mongo_collection, **kwargs):
+    """ Insert a school with features
 
         Args:
             mongo_collection: Collection to pass
