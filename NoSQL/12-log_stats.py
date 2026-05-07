@@ -4,7 +4,7 @@ from pymongo import MongoClient
 
 
 def _count(coll, query=None):
-    """Count documents compatible across PyMongo versions."""
+    """Count documents with compatibility across PyMongo versions."""
     if query is None:
         query = {}
     try:
@@ -27,4 +27,3 @@ if __name__ == "__main__":
     print("{} status check".format(
         _count(collection, {"method": "GET", "path": "/status"})
     ))
-EOF
