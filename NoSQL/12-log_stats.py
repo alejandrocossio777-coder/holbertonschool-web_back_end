@@ -3,32 +3,28 @@
 from pymongo import MongoClient
 
 
-def count_docs(collection, query=None):
-    """Count documents with backward compatibility."""
+def _count(coll, query=None):
+    """Count documents with compatibility across PyMongo versions."""
     if query is None:
         query = {}
     try:
-        return collection.count_documents(query)
+        return coll.count_documents(query)
     except Exception:
-        return collection.count(query)
+        return coll.count(query)
 
 
 if __name__ == "__main__":
-    client = MongoClient()
+    client = MongoClient('mongodb://127.0.0.1:27017')
     collection = client.logs.nginx
 
-    print("{} logs".format(count_docs(collection)))
+    print("{} logs".format(_count(collection)))
     print("Methods:")
-    print("\tmethod GET: {}".format(
-        count_docs(collection, {"method": "GET"})))
-    print("\tmethod POST: {}".format(
-        count_docs(collection, {"method": "POST"})))
-    print("\tmethod PUT: {}".format(
-        count_docs(collection, {"method": "PUT"})))
-    print("\tmethod PATCH: {}".format(
-        count_docs(collection, {"method": "PATCH"})))
-    print("\tmethod DELETE: {}".format(
-        count_docs(collection, {"method": "DELETE"})))
+    print("\tmethod GET: {}".format(_count(collection, {"method": "GET"})))
+    print("\tmethod POST: {}".format(_count(collection, {"method": "POST"})))
+    print("\tmethod PUT: {}".format(_count(collection, {"method": "PUT"})))
+    print("\tmethod PATCH: {}".format(_count(collection, {"method": "PATCH"})))
+    print("\tmethod DELETE: {}".format(_count(collection, {"method": "DELETE"})))
     print("{} status check".format(
-        count_docs(collection, {"method": "GET", "path": "/status"})
+        _count(collection, {"method": "GET", "path": "/status"})
     ))
+    
