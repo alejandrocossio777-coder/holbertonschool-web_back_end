@@ -4,7 +4,7 @@ from pymongo import MongoClient
 
 
 def count_docs(collection, query=None):
-    """Count documents, compatible with old PyMongo."""
+    """Count documents with backward compatibility."""
     if query is None:
         query = {}
     try:
