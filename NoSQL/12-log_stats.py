@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
-""" 12-log_stats """
+"""
+Script that provides stats about Nginx logs stored in MongoDB
+"""
+
 from pymongo import MongoClient
 
 
-def _count(coll, query=None):
-    """Count documents with compatibility across PyMongo versions."""
-    if query is None:
-        query = {}
-    try:
-        return coll.count_documents(query)
-    except Exception:
-        return coll.count(query)
-
-
 if __name__ == "__main__":
-    client = MongoClient('mongodb://127.0.0.1:27017')
+    client = MongoClient("mongodb://127.0.0.1:27017")
     collection = client.logs.nginx
 
-    print("{} logs".format(_count(collection)))
+    # Total number of logs
+    total_logs = collection.count()
+    print(f"{total_logs} logs")
+
     print("Methods:")
-    print("\tmethod GET: {}".format(_count(collection, {"method": "GET"})))
-    print("\tmethod POST: {}".format(_count(collection, {"method": "POST"})))
-    print("\tmethod PUT: {}".format(_count(collection, {"method": "PUT"})))
-    print("\tmethod PATCH: {}".format(_count(collection, {"method": "PATCH"})))
-    print("\tmethod DELETE: {}".format(_count(collection, {"method": "DELETE"})))
-    print("{} status check".format(
-        _count(collection, {"method": "GET", "path": "/status"})
-    ))
+
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        count = collection.find({"method": method}).count()
+        print(f"\tmethod {method}: {count}")
+
+    # Status check: GET /status
+    status_check = collection.find({
+        "method": "GET",
+        "path": "/status"
+    }).count()
+    print(f"{status_check} status check")
