@@ -1,30 +1,17 @@
 #!/usr/bin/env python3
-""" 12-log_stats """
+"""12-log_stats"""
 from pymongo import MongoClient
 
 
-def _count(coll, query=None):
-    """Count documents with compatibility across PyMongo versions."""
-    if query is None:
-        query = {}
-    try:
-        return coll.count_documents(query)
-    except Exception:
-        return coll.count(query)
-
-
 if __name__ == "__main__":
-    client = MongoClient('mongodb://127.0.0.1:27017')
+    client = MongoClient()
     collection = client.logs.nginx
 
-    print("{} logs".format(_count(collection)))
+    print(f"{collection.count_documents({})} logs")
     print("Methods:")
-    print("\tmethod GET: {}".format(_count(collection, {"method": "GET"})))
-    print("\tmethod POST: {}".format(_count(collection, {"method": "POST"})))
-    print("\tmethod PUT: {}".format(_count(collection, {"method": "PUT"})))
-    print("\tmethod PATCH: {}".format(_count(collection, {"method": "PATCH"})))
-    print("\tmethod DELETE: {}".format(_count(collection, {"method": "DELETE"})))
-    print("{} status check".format(
-        _count(collection, {"method": "GET", "path": "/status"})
-    ))
-    
+    print(f"\tmethod GET: {collection.count_documents({'method': 'GET'})}")
+    print(f"\tmethod POST: {collection.count_documents({'method': 'POST'})}")
+    print(f"\tmethod PUT: {collection.count_documents({'method': 'PUT'})}")
+    print(f"\tmethod PATCH: {collection.count_documents({'method': 'PATCH'})}")
+    print(f"\tmethod DELETE: {collection.count_documents({'method': 'DELETE'})}")
+    print(f"{collection.count_documents({'method': 'GET', 'path': '/status'})} status check")
