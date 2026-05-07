@@ -1,8 +1,6 @@
--- Trigger that decreases item quantity after a new order is added
--- Activity 4
-CREATE TRIGGER decrease_quantity
+-- Make a trigger to buy item
+CREATE TRIGGER DelQuantityConsult
 AFTER INSERT ON orders
 FOR EACH ROW
-UPDATE items
-SET quantity = quantity - NEW.number
-WHERE id = NEW.item_id;
+UPDATE items SET quantity = quantity - NEW.number
+WHERE NEW.item_name = name;
